@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContactAction } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/thunks';
+import { selectorItems } from '../../redux/selectors';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const { contacts } = useSelector(state => state.contacts);
+  const [phone, setPhone] = useState('');
+  const items = useSelector(selectorItems);
   const dispatch = useDispatch();
 
   const handlerFormSubmits = e => {
     e.preventDefault();
-    contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
+
+    items?.find(contact => contact.name.toLowerCase() === name.toLowerCase())
       ? alert(name + ' is already in contacts')
-      : dispatch(addContactAction({ name, number }));
+      : dispatch(addContact({ name, phone }));
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   const handleChange = event => {
@@ -23,8 +25,8 @@ export const ContactForm = () => {
       case 'name':
         setName(event.currentTarget.value);
         break;
-      case 'number':
-        setNumber(event.currentTarget.value);
+      case 'phone':
+        setPhone(event.currentTarget.value);
         break;
       default:
         return;
@@ -50,9 +52,9 @@ export const ContactForm = () => {
           <input
             className={css.input}
             type="tel"
-            name="number"
+            name="phone"
             required
-            value={number}
+            value={phone}
             onChange={handleChange}
           ></input>
         </label>
