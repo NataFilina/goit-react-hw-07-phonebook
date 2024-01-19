@@ -29,14 +29,14 @@ const contactsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
-        state.contacts.items = payload.data;
+        state.contacts.items = payload;
       })
       .addCase(addContact.fulfilled, (state, { payload }) => {
-        state.contacts.items.push(payload.data);
+        state.contacts.items.push(payload);
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.contacts.items = state.contacts.items.filter(
-          contact => contact.id !== payload
+          contact => contact.id !== payload.id
         );
       })
       .addMatcher(action => action.type.endsWith('/pending'), handlePending)
